@@ -1,0 +1,13 @@
+C:\Users\carineallen\Documents\Coding Projects\Interpolation\Interpolation\bin\Debug\Interpolation.exe.config
+C:\Users\carineallen\Documents\Coding Projects\Interpolation\Interpolation\bin\Debug\Interpolation.exe
+C:\Users\carineallen\Documents\Coding Projects\Interpolation\Interpolation\bin\Debug\Interpolation.pdb
+C:\Users\carineallen\Documents\Coding Projects\Interpolation\Interpolation\obj\Debug\Interpolation.csprojAssemblyReference.cache
+C:\Users\carineallen\Documents\Coding Projects\Interpolation\Interpolation\obj\Debug\Interpolation.Form1.resources
+C:\Users\carineallen\Documents\Coding Projects\Interpolation\Interpolation\obj\Debug\Interpolation.Properties.Resources.resources
+C:\Users\carineallen\Documents\Coding Projects\Interpolation\Interpolation\obj\Debug\Interpolation.csproj.GenerateResource.cache
+C:\Users\carineallen\Documents\Coding Projects\Interpolation\Interpolation\obj\Debug\Interpolation.csproj.CoreCompileInputs.cache
+C:\Users\carineallen\Documents\Coding Projects\Interpolation\Interpolation\obj\Debug\Interpolation.exe
+C:\Users\carineallen\Documents\Coding Projects\Interpolation\Interpolation\obj\Debug\Interpolation.pdb
+C:\Users\carineallen\Documents\Coding Projects\Interpolation\Interpolation\bin\Debug\FractionsFunc.dll
+C:\Users\carineallen\Documents\Coding Projects\Interpolation\Interpolation\bin\Debug\FractionsFunc.pdb
+C:\Users\carineallen\Documents\Coding Projects\Interpolation\Interpolation\obj\Debug\Interpolation.csproj.CopyComplete
