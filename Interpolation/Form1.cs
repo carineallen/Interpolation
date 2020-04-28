@@ -89,7 +89,7 @@ namespace Interpolation
                     {
                         X2 = Convert.ToDecimal(dataGridView1.Rows[i].Cells[0].Value);
                         Y2 = Convert.ToDecimal(dataGridView1.Rows[i].Cells[1].Value);
-                        if (X2 - X1 > 0.05m)
+                        if (X2 - X1 > Convert.ToDecimal(Interval))
                         {
                             //if (X1 > 0)
                             //{
@@ -307,6 +307,32 @@ namespace Interpolation
         {
             int i, g;
             bool Fineshed = false;
+            if (textBox6.Text == "")
+            {
+                MessageBox.Show("you have to choose a X interval");
+                return;
+            }
+            if (textBox5.Text == "")
+            {
+                MessageBox.Show("you have to choose a Y interval");
+                return;
+            }
+            if (textBox7.Text == "")
+            {
+                MessageBox.Show("you have to choose a Y Max.");
+                return;
+            }
+            if (textBox8.Text == "")
+            {
+                MessageBox.Show("you have to choose a Y Min.");
+                return;
+            }
+
+            if (Convert.ToString(dataGridView1.Rows[0].Cells[0].Value) == "" || Convert.ToString(dataGridView1.Rows[0].Cells[1].Value) == "")
+            {
+                MessageBox.Show("You have to put some data in the table");
+                return;
+            }
             Interval = Convert.ToDouble(textBox6.Text);
             ValuesTable = new DataTable();
             ValuesTable.Columns.Add();
@@ -338,10 +364,10 @@ namespace Interpolation
 
             chart.AxisX.Minimum = Convert.ToDouble(dataGridView1.Rows[0].Cells[0].Value);
             chart.AxisX.Maximum = Convert.ToDouble(dataGridView1.Rows[dataGridView1.Rows.Count - 2].Cells[0].Value);
-            chart.AxisY.Minimum = -0.5;
-            chart.AxisY.Maximum = 2;
+            chart.AxisY.Minimum = Convert.ToDouble(textBox8.Text);
+            chart.AxisY.Maximum = Convert.ToDouble(textBox7.Text);
 
-            chart.AxisY.Interval = 0.5;
+            chart.AxisY.Interval = Convert.ToDouble(textBox5.Text);
             chart.AxisX.Interval = Interval;
 
             chart1.Series.Add("Lagrange Interpolation");
