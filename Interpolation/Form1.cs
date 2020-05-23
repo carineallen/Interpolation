@@ -13,6 +13,23 @@ namespace Interpolation
 {
     public partial class Form1 : Form
     {
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+
+            int formHeight = 692;
+            int formWidth = 1534;
+            int diffX = this.Width - formWidth;
+            int diffY = this.Height - formHeight;
+
+            dataGridView1.Height = 621 + diffY;
+
+            chart1.Width = 1094 + diffX;
+            chart1.Height = 459 + diffY;
+
+
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -76,8 +93,8 @@ namespace Interpolation
             while (Fineshed == false)
             {
                 DataTable DataTable1 = new DataTable();
-                DataTable1.Columns.Add();
-                DataTable1.Columns.Add();
+                DataTable1.Columns.Add("X");
+                DataTable1.Columns.Add("Y");
                 decimal X1, X2, Y1, Y2;
                 if (dataGridView1.Rows.Count > 0)
                 {
@@ -100,7 +117,7 @@ namespace Interpolation
                             //    X1 += Convert.ToDecimal(Interval);
                             //}
                             X1 += Convert.ToDecimal(Interval);
-                            Y2 = Get_NewValue(X1);
+                            Y2 = Get_NewValue_Lagrange(X1);
                             Y2 = Math.Round(Y2, 3);
                             DataTable1.Rows.Add(X1, Y2);
                             //DataTable1.Rows[DataTable1.Rows.Count - 1].ItemArray[0] = X1;
@@ -175,7 +192,7 @@ namespace Interpolation
             chart1.Series[1].Enabled = true;
         }
 
-        private decimal Get_NewValue(decimal Xp)
+        private decimal Get_NewValue_Lagrange(decimal Xp)
         {
 
             decimal[] X = new decimal[ValuesTable.Rows.Count];
@@ -247,7 +264,7 @@ namespace Interpolation
                 ValuesTable.Rows.Add(dataGridView1.Rows[g].Cells[0].Value, dataGridView1.Rows[g].Cells[1].Value);
             }
 
-            decimal Result = Get_NewValue(Convert.ToDecimal(textBox1.Text));
+            decimal Result = Get_NewValue_Lagrange(Convert.ToDecimal(textBox1.Text));
             textBox2.Text = Convert.ToString(Result);
         }
 
@@ -255,17 +272,34 @@ namespace Interpolation
         {
             if (e.KeyCode == Keys.V)
             {
+                int ColumnCount = dataGridView1.Columns.Count;
+                int RowsCount = dataGridView1.Rows.Count;
+
                 try
                 {
-                    for (int d = 0; d <= dataGridView1.Rows.Count - 1; d++)
+                    for (int d = 0; d <= RowsCount - 1; d++)
                     {
-                        dataGridView1.Rows.Remove(dataGridView1.Rows[dataGridView1.Rows.Count - 2]);
+                        dataGridView1.Rows.Remove(dataGridView1.Rows[dataGridView1.Rows.Count - 1]);
                     }
                 }
                 catch
                 {
 
                 }
+
+
+                try
+                {
+                    for (int d = 0; d <= ColumnCount - 1; d++)
+                    {
+                        dataGridView1.Columns.Remove(dataGridView1.Columns[dataGridView1.Columns.Count - 1]);
+                    }
+                }
+                catch
+                {
+
+                }
+
                 int i;
                 string Line = Clipboard.GetText();
                 string[] Split1 = Line.Split('\n');
@@ -388,24 +422,98 @@ namespace Interpolation
 
         private void button4_Click(object sender, EventArgs e)
         {
-            int n, k;
-            decimal sum;
-
-            k = 1000000;
-            sum = 0.0m;
-            for (n = 1; n <= k; n++)
+            if (textBox4.Text == "")
             {
-                sum += 1 / (decimal)n;
+                MessageBox.Show("you have to choose a X value to calculate Y");
+                return;
+            }
+            ValuesTable = new DataTable();
+            ValuesTable.Columns.Add();
+            ValuesTable.Columns.Add();
+            int g;
+            for (g = 0; g < dataGridView1.Rows.Count - 1; g++)
+            {
+                ValuesTable.Rows.Add(dataGridView1.Rows[g].Cells[0].Value, dataGridView1.Rows[g].Cells[1].Value);
+            }
+
+            decimal Result = Get_NewValue_Cubic(Convert.ToDecimal(textBox4.Text));
+            textBox3.Text = Convert.ToString(Result);
+        }
+
+        private decimal Get_NewValue_Cubic(decimal Xp)
+        {
+            decimal Fx0, Fx1,X0,X1,Xi,Yi;
+            int z;
+            Xi = Xp;
+            X0 = 0;
+            X1 = 0;
+            Fx0 = 0;
+            Fx1 = 0;
+            for (z = 0; z <= ValuesTable.Rows.Count - 1; z++)
+            {
+                X0 = Convert.ToDecimal(ValuesTable.Rows[z].ItemArray[0]);
+                X1 = Convert.ToDecimal(ValuesTable.Rows[z + 1].ItemArray[0]);
+                Fx0 = Convert.ToDecimal(ValuesTable.Rows[z].ItemArray[1]);
+                Fx1 = Convert.ToDecimal(ValuesTable.Rows[z + 1].ItemArray[1]);
+
+                if ((Xi > X0 && Xi < X1) || (Xi == X0) || (Xi == X1)) {
+
+                    break;
+                    }
 
 
             }
 
-            textBox4.Text = Convert.ToString(sum);
+            Yi = (Fx0 / 6m) * ((Convert.ToDecimal(Math.Pow(Convert.ToDouble(X1 - Xi), 3)) / (X1 - X0)) - ((X1 - X0) * (X1 - Xi)));
+            Yi = Yi + (Fx1 / 6m) * ((Convert.ToDecimal(Math.Pow(Convert.ToDouble(Xi - X0), 3)) / (X1 - X0)) - ((X1 - X0) * (Xi - X0)));
+            Yi = Yi + ((Fx0) * (( X1 - Xi) / (X1 - X0))) + ((Fx1) * ((Xi - X0) / (X1 - X0)));
+            return Yi;
         }
 
-        private void Form1_Resize(object sender, EventArgs e)
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (textBox1.Text == "")
+                {
+                    MessageBox.Show("you have to choose a X value to calculate Y");
+                    return;
+                }
+                ValuesTable = new DataTable();
+                ValuesTable.Columns.Add();
+                ValuesTable.Columns.Add();
+                int g;
+                for (g = 0; g < dataGridView1.Rows.Count - 1; g++)
+                {
+                    ValuesTable.Rows.Add(dataGridView1.Rows[g].Cells[0].Value, dataGridView1.Rows[g].Cells[1].Value);
+                }
 
+                decimal Result = Get_NewValue_Lagrange(Convert.ToDecimal(textBox1.Text));
+                textBox2.Text = Convert.ToString(Result);
+            }
+        }
+
+        private void textBox4_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (textBox4.Text == "")
+                {
+                    MessageBox.Show("you have to choose a X value to calculate Y");
+                    return;
+                }
+                ValuesTable = new DataTable();
+                ValuesTable.Columns.Add();
+                ValuesTable.Columns.Add();
+                int g;
+                for (g = 0; g < dataGridView1.Rows.Count - 1; g++)
+                {
+                    ValuesTable.Rows.Add(dataGridView1.Rows[g].Cells[0].Value, dataGridView1.Rows[g].Cells[1].Value);
+                }
+
+                decimal Result = Get_NewValue_Cubic(Convert.ToDecimal(textBox4.Text));
+                textBox3.Text = Convert.ToString(Result);
+            }
         }
     }
 }

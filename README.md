@@ -37,7 +37,7 @@ You will put the set of data points in the datagridview
  ### Cubic Spline Interpolation
       
   By clinkig the "Cubic Splines" Button it will show the graph of the given data points by Cubic Splines interpolation.
-  The function to calculate the interpolation point for a specific X is comming soon.
+  You can calculate a interpolation point for a specific X by clinking in the "FOR X" button.
     
   Here is what will look for the given example data points:
     
