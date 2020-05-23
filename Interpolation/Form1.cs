@@ -370,7 +370,7 @@ namespace Interpolation
             chart.AxisY.Interval = Convert.ToDouble(textBox5.Text);
             chart.AxisX.Interval = Interval;
 
-            chart1.Series.Add("Lagrange Interpolation");
+            chart1.Series.Add("Cubic Splines Interpolation");
             chart1.Series[1].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
             chart1.Series[1].Color = Color.Red;
             chart1.Series[0].IsVisibleInLegend = false;
@@ -387,6 +387,23 @@ namespace Interpolation
         }
 
         private void button4_Click(object sender, EventArgs e)
+        {
+            int n, k;
+            decimal sum;
+
+            k = 1000000;
+            sum = 0.0m;
+            for (n = 1; n <= k; n++)
+            {
+                sum += 1 / (decimal)n;
+
+
+            }
+
+            textBox4.Text = Convert.ToString(sum);
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
         {
 
         }
